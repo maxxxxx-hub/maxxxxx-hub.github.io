@@ -3,7 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <title>Catch My Bear 🐻</title>
-<style>
+<style>.bear {
+  position: absolute;
+  font-size: 40px;
+  cursor: pointer;
+  animation: float 4s linear forwards;
+  z-index: 1000; /* <-- ensures bears are on top */
+}
 body {
   margin: 0;
   overflow: hidden;
