@@ -1,44 +1,86 @@
-<script>
-let score = 0;
-let crushName = "Veronica";
-
-// Function to create a bear
-function createBear() {
-  const bear = document.createElement("div");
-  bear.className = "bear";
-  bear.innerHTML = "🐻";
-  bear.style.left = Math.random() * (window.innerWidth - 50) + "px";
-  document.body.appendChild(bear);
-
-  // Click event
-  bear.addEventListener("click", function() {
-    score++;
-
-    // Update score safely
-    const scoreEl = document.getElementById("score");
-    if(scoreEl) {
-      scoreEl.textContent = score;
-    }
-
-    bear.remove();
-
-    // Show final message after 5 bears
-    if (score >= 5) {
-      const messageEl = document.getElementById("message");
-      const finalTextEl = document.getElementById("finalText");
-      if(messageEl && finalTextEl){
-        messageEl.style.display = "block";
-        finalTextEl.textContent = "Okay fine… Veronica, if you caught it, you keep it. And maybe… me too? 😳";
-      }
-    }
-  });
-
-  // Remove bear after 4 seconds if not clicked
-  setTimeout(() => {
-    bear.remove();
-  }, 4000);
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Catch My Bear 🐻</title>
+<style>
+body {
+  margin: 0;
+  overflow: hidden;
+  background: linear-gradient(135deg, #f6d365, #fda085);
+  font-family: Arial, sans-serif;
+  text-align: center;
 }
 
-// Spawn bears every 0.8 seconds
-setInterval(createBear, 800);
+h1 {
+  margin-top: 20px;
+  color: white;
+}
+
+.bear {
+  position: absolute;
+  font-size: 60px;           /* bigger for easy tapping */
+  cursor: pointer;
+  top: 50%;                  /* fixed vertical position */
+  left: 50%;                 /* fixed horizontal position */
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  pointer-events: auto;
+}
+
+#message {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  display: none;
+  box-shadow: 0 0 20px rgba(0,0,0,0.3);
+  width: 80%;
+  max-width: 320px;
+}
+</style>
+</head>
+<body>
+
+<h1>Catch My Bear 🐻</h1>
+<p style="color:white;">Bears Caught: <span id="score">0</span></p>
+
+<div id="message">
+  <h2>You caught my bear 🐻</h2>
+  <p id="finalText"></p>
+</div>
+
+<div id="bear" class="bear">🐻</div>
+
+<script>
+let score = 0;
+let crushName = "Veronica";  // Hard-coded crush name
+
+const bear = document.getElementById("bear");
+
+bear.addEventListener("click", function() {
+  score++;
+  document.getElementById("score").textContent = score;
+
+  // Move the bear to a new random position within the viewport
+  const maxX = window.innerWidth - 80;  // prevent overflow
+  const maxY = window.innerHeight - 80;
+  const newX = Math.random() * maxX;
+  const newY = Math.random() * maxY;
+  bear.style.left = newX + "px";
+  bear.style.top = newY + "px";
+
+  // Show final message after 5 catches
+  if(score >= 5) {
+    document.getElementById("message").style.display = "block";
+    document.getElementById("finalText").textContent =
+      "Okay fine… Veronica, if you caught it, you keep it. And maybe… me too? 😳";
+  }
+});
 </script>
+
+</body>
+</html>
