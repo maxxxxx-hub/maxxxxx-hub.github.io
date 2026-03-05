@@ -1,72 +1,5 @@
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>Catch My Bear 🐻</title>
-<style>
-/* Page background and basic font */
-body {
-  margin: 0;
-  overflow: hidden;
-  background: linear-gradient(135deg, #f6d365, #fda085);
-  font-family: Arial, sans-serif;
-  text-align: center;
-}
-
-/* Title style */
-h1 {
-  margin-top: 20px;
-  color: white;
-}
-
-/* Bear style */
-.bear {
-  position: absolute;
-  font-size: 50px;           /* bigger for mobile taps */
-  cursor: pointer;
-  animation: float 4s linear forwards;
-  z-index: 1000;             /* ensures bears are on top */
-  pointer-events: auto;      /* allows clicks during animation */
-}
-
-/* Bear floating animation */
-@keyframes float {
-  from { transform: translateY(100vh); }
-  to { transform: translateY(-10vh); }
-}
-
-/* Pop-up message box when 5 bears are caught */
-#message {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: white;
-  padding: 30px;
-  border-radius: 20px;
-  display: none;
-  box-shadow: 0 0 20px rgba(0,0,0,0.3);
-  width: 80%;
-  max-width: 320px;
-}
-</style>
-</head>
-<body>
-
-<h1>Catch My Bear 🐻</h1>
-<p style="color:white;">Bears Caught: <span id="score">0</span></p>
-
-<div id="message">
-  <h2>You caught my bear 🐻</h2>
-  <p id="finalText"></p>
-</div>
-
 <script>
-// Score tracking
 let score = 0;
-
-// Crush name hard-coded
 let crushName = "Veronica";
 
 // Function to create a bear
@@ -80,14 +13,23 @@ function createBear() {
   // Click event
   bear.addEventListener("click", function() {
     score++;
-    document.getElementById("score").textContent = score;
+
+    // Update score safely
+    const scoreEl = document.getElementById("score");
+    if(scoreEl) {
+      scoreEl.textContent = score;
+    }
+
     bear.remove();
 
     // Show final message after 5 bears
     if (score >= 5) {
-      document.getElementById("message").style.display = "block";
-      document.getElementById("finalText").textContent =
-        "Okay fine… Veronica, if you caught it, you keep it. And maybe… me too? 😳";
+      const messageEl = document.getElementById("message");
+      const finalTextEl = document.getElementById("finalText");
+      if(messageEl && finalTextEl){
+        messageEl.style.display = "block";
+        finalTextEl.textContent = "Okay fine… Veronica, if you caught it, you keep it. And maybe… me too? 😳";
+      }
     }
   });
 
@@ -100,6 +42,3 @@ function createBear() {
 // Spawn bears every 0.8 seconds
 setInterval(createBear, 800);
 </script>
-
-</body>
-</html>
