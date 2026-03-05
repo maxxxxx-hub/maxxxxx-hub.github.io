@@ -3,13 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Catch My Bear 🐻</title>
-<style>.bear {
-  position: absolute;
-  font-size: 40px;
-  cursor: pointer;
-  animation: float 4s linear forwards;
-  z-index: 1000; /* <-- ensures bears are on top */
-}
+<style>
+/* Page background and basic font */
 body {
   margin: 0;
   overflow: hidden;
@@ -18,23 +13,29 @@ body {
   text-align: center;
 }
 
+/* Title style */
 h1 {
   margin-top: 20px;
   color: white;
 }
 
+/* Bear style */
 .bear {
   position: absolute;
-  font-size: 40px;
+  font-size: 50px;           /* bigger for mobile taps */
   cursor: pointer;
   animation: float 4s linear forwards;
+  z-index: 1000;             /* ensures bears are on top */
+  pointer-events: auto;      /* allows clicks during animation */
 }
 
+/* Bear floating animation */
 @keyframes float {
   from { transform: translateY(100vh); }
   to { transform: translateY(-10vh); }
 }
 
+/* Pop-up message box when 5 bears are caught */
 #message {
   position: fixed;
   top: 50%;
@@ -51,6 +52,7 @@ h1 {
 </style>
 </head>
 <body>
+
 <h1>Catch My Bear 🐻</h1>
 <p style="color:white;">Bears Caught: <span id="score">0</span></p>
 
@@ -60,9 +62,13 @@ h1 {
 </div>
 
 <script>
+// Score tracking
 let score = 0;
+
+// Crush name hard-coded
 let crushName = "Veronica";
 
+// Function to create a bear
 function createBear() {
   const bear = document.createElement("div");
   bear.className = "bear";
@@ -70,11 +76,13 @@ function createBear() {
   bear.style.left = Math.random() * (window.innerWidth - 50) + "px";
   document.body.appendChild(bear);
 
+  // Click event
   bear.addEventListener("click", function() {
     score++;
     document.getElementById("score").textContent = score;
     bear.remove();
 
+    // Show final message after 5 bears
     if (score >= 5) {
       document.getElementById("message").style.display = "block";
       document.getElementById("finalText").textContent =
@@ -82,12 +90,15 @@ function createBear() {
     }
   });
 
+  // Remove bear after 4 seconds if not clicked
   setTimeout(() => {
     bear.remove();
   }, 4000);
 }
 
+// Spawn bears every 0.8 seconds
 setInterval(createBear, 800);
 </script>
+
 </body>
-</html> 
+</html>
